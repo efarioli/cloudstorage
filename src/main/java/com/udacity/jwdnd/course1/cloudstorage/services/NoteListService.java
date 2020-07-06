@@ -19,7 +19,13 @@ public class NoteListService {
         notes.add(note);
         return note;
     }
-    public List<Note> getNotes(){
+    public List<Note> getNotes()
+    {
+        System.out.println("FROM NOTELIST SERVICE");
+        for(var note : this.notes){
+            System.out.println(note);
+        }
         return new ArrayList<>(this.notes);
+
     }
 }

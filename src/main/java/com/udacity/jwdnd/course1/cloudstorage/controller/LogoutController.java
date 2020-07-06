@@ -21,31 +21,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller()
-@RequestMapping("/logout")
 public class LogoutController {
 
 
-
-    @GetMapping()
-    public String fetchSignoutSite(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("Logout route HITED");
+    @RequestMapping("/logout")
+    public String doLogout(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("Hitted logout route");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
+        if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-
-        return "redirect:/login?logout";
+        return "redirect:/login?logout"; //You can redirect wherever you want, but generally it's a good practice to show login screen again.
     }
-    @PostMapping()
-    public String fetchSignoutSitePost(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("Logout route HITED --- POST");
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
 
-        return "redirect:/login?logout";
-    }
 
 
 

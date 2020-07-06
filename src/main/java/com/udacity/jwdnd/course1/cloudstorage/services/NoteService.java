@@ -13,10 +13,12 @@ import java.util.Base64;
 public class NoteService {
     private final UserMapper userMapper;
     private final NoteMapper noteMapper;
+    private final NoteListService noteListService;
 
-    public NoteService(UserMapper userMapper, NoteMapper noteMapper) {
+    public NoteService(UserMapper userMapper, NoteMapper noteMapper, NoteListService noteListService) {
         this.userMapper = userMapper;
         this.noteMapper = noteMapper;
+        this.noteListService = noteListService;
     }
 
     public boolean isUsernameAvailable(String username) {
@@ -24,8 +26,14 @@ public class NoteService {
     }
 
     public int createNote(Note note) {
-
-        return noteMapper.insert(new Note(null, note.getNoteTitle(), note.getNoteDescription(), 1));
+        Note tempNote = new Note(null, note.getNoteTitle(), note.getNoteDescription(), 1);
+        int numInsertedRows= noteMapper.insert(tempNote);
+        if  (numInsertedRows>0){
+            noteListService.addNote(tempNote);
+        }
+        int noteId = tempNote.getNoteId();
+        System.out.println("tempnote:" + tempNote);
+        return noteId;
     }
     public Note getNote (Integer noteId) {return noteMapper.getNote(noteId);}
 

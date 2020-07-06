@@ -40,6 +40,8 @@ public class SignupController {
 
         if (signupError == null) {
             int rowsAdded = userService.createUser(user);
+            //int id = user.getUserId();
+            System.out.println("USER NAME----" + rowsAdded +  "---" );
             if (rowsAdded < 0) {
                 signupError = "There was an error signing you up. Please try again.";
             }

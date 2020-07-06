@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/home")
 public class HomeController {
     private NoteService noteService;
     private NoteListService noteListService;
@@ -21,13 +21,20 @@ public class HomeController {
         this.noteListService = noteListService;
     }
 
-    @GetMapping()
-    public String getHomePage() {
+    @GetMapping("/home")
+    public ModelAndView getHomePage(@ModelAttribute("newMessage") NoteForm noteForm, Model model) {
         System.out.println("HOME ROUT-----------------------------------------------------");
-
-
-        return "home";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("newNote", new Note());
+        modelAndView.addObject("getNotes", noteListService.getNotes());
+        modelAndView.addObject("addedObjectModel", "");
+        modelAndView.setViewName("/home");
+        return modelAndView;
     }
+//    @GetMapping("/logout")
+//    public String doLogout(){
+//        return "redirect:/login?logout";
+//    }
 
 
 

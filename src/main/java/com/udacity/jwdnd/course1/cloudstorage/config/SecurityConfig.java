@@ -27,21 +27,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/signup", "/css/**", "/js/**", "/login?redirect=true", "/login?aaa").permitAll()
+                .antMatchers("/signup", "/css/**", "/js/**", "/login", "/logout").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin()
                 .loginPage("/login")
                 .permitAll()
-                .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login")
-                .invalidateHttpSession(true)        // set invalidation state when logout
-                .deleteCookies("JSESSIONID")
-                .and()
-                .exceptionHandling()
-                .accessDeniedPage("/403")
+
+//                .and()
+//                .logout()
+//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .logoutSuccessUrl("/login?logout")
+//                .invalidateHttpSession(true)        // set invalidation state when logout
+//                .deleteCookies("JSESSIONID")
+//                .and()
+//                .exceptionHandling()
+//                .accessDeniedPage("/403")
         ;
 
         http.formLogin()
