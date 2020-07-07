@@ -18,12 +18,12 @@
     <div id="contentDiv" style="clear: right;">
         <nav style="clear: right;">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a  th:classappend="${!addedObjectModel.equals('note')} ? active"
-                        class="nav-item nav-link " id="nav-files-tab" data-toggle="tab" href="#nav-files" role="tab"
+                <a th:classappend="${!addedObjectModel.equals('note')} ? active"
+                   class="nav-item nav-link " id="nav-files-tab" data-toggle="tab" href="#nav-files" role="tab"
                    aria-controls="nav-files" th:attr="aria-selected=${!addedObjectModel.equals('note')}">Files</a>
 
                 <a th:classappend="${addedObjectModel.equals('note')} ? active"
-                        class="nav-item nav-link" id="nav-notes-tab" data-toggle="tab" href="#nav-notes" role="tab"
+                   class="nav-item nav-link" id="nav-notes-tab" data-toggle="tab" href="#nav-notes" role="tab"
                    aria-controls="nav-notes" th:attr="aria-selected=${addedObjectModel.equals('note')}">Notes</a>
                 <a class="nav-item nav-link" id="nav-credentials-tab" data-toggle="tab" href="#nav-credentials"
                    role="tab" aria-controls="nav-credentials"
@@ -32,7 +32,7 @@
         </nav>
         <div class="tab-content" id="nav-tabContent">
             <div th:classappend="${!addedObjectModel.equals('note')} ? active"
-                    class="tab-pane fade show " id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
+                 class="tab-pane fade show " id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
                 <form action="#" enctype="multipart/form-data" method="POST">
                     <div class="container">
                         <div class="row" style="margin: 1em;">
@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div th:classappend="${addedObjectModel.equals('note')} ? active"
-                    class="tab-pane " id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
+                 class="tab-pane " id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
                 <button style="margin: 0.25em;" type="button" class="btn btn-info float-right"
                         onclick="showNoteModal()">
                     + Add a New Note
@@ -88,7 +88,9 @@
                         <tr>
                             <td>
                                 <button type="button" class="btn btn-success">Edit</button>
-                                <a class="btn btn-danger">Delete</a>
+
+                                    <a class="btn btn-danger" th:href="@{'/delete_note/' + ${(tempNote == null) ? '' : tempNote.getNoteId()}}">Delete</a>
+
                             </td>
                             <th scope="row" th:text="${tempNote.noteTitle}">Example Note Title</th>
                             <td th:text="${tempNote.noteDescription}">Example Note Description</td>
@@ -97,6 +99,7 @@
                     </table>
 
                 </div>
+
 
                 <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel"
                      aria-hidden="true">
@@ -210,7 +213,7 @@
             </div>
         </div>
     </div>
-    <h2 th:text="${addedObjectModel}">rrrrr</h2>
+    <h2 th:text="${addedObjectModel.toString()}">rrrrr</h2>
 </div>
 
 <script th:src="@{/js/jquery-slim.min.js}"></script>
