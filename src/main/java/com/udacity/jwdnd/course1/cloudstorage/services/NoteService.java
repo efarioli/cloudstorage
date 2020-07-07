@@ -26,7 +26,7 @@ public class NoteService {
     }
 
     public int createNote(Note note) {
-        Note tempNote = new Note(null, note.getNoteTitle(), note.getNoteDescription(), 1);
+        Note tempNote = new Note(null, note.getNoteTitle(), note.getNoteDescription(), note.getUserId());
         int numInsertedRows= noteMapper.insert(tempNote);
         if  (numInsertedRows>0){
             noteListService.addNote(tempNote);

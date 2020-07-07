@@ -1,9 +1,12 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
+import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteListService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,12 +33,17 @@ public class NoteController {
 //            return "index";
 //        }
         //System.out.println(model.getAttribute(""));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+        User user = userService.getUser(userName);
+
+
 
         ModelAndView modelAndView = new ModelAndView();
 
-        Note tempNote = new Note( null, noteForm.getNoteTitle(), noteForm.getNoteDescription(),noteForm.getUserId());
+        Note tempNote = new Note( null, noteForm.getNoteTitle(), noteForm.getNoteDescription(),user.getUserId());
         modelAndView.addObject("notesModel", noteService.createNote(tempNote));
-        modelAndView.addObject("getNotes", noteListService.getNotes());
+        modelAndView.addObject("getNotes", noteListService.getNotesPerUser(user.getUserId()));
 
         System.out.println(tempNote);
 

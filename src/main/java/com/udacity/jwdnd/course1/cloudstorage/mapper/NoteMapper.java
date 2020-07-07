@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface NoteMapper {
 
@@ -17,8 +19,9 @@ public interface NoteMapper {
     @Options(useGeneratedKeys = true, keyProperty = "noteId")
     int insert(Note note);
 
-    @Select("SELECT * FROM NOTES WHERE userId = #{UserId}")
-    Note getNotesPerUser(Integer userId);
+
+    @Select("SELECT * FROM NOTES WHERE userId = #{userId}")
+    List<Note> getNotesPerUser(Integer userId);
 
 
 

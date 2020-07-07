@@ -40,6 +40,12 @@ public class SignupController {
 
         if (signupError == null) {
             int rowsAdded = userService.createUser(user);
+
+            //rowAdded = userID
+            model.addAttribute("userModel", userService.getUser(rowsAdded));
+
+
+
             //int id = user.getUserId();
             System.out.println("USER NAME----" + rowsAdded +  "---" );
             if (rowsAdded < 0) {
