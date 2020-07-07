@@ -87,7 +87,10 @@
                         <tbody th:each="tempNote : ${getNotes}">
                         <tr>
                             <td>
-                                <button type="button" class="btn btn-success">Edit</button>
+                                <button  class="btn btn-success"
+                                         th:attr="onclick=|showNoteModal(${tempNote.getNoteId()},  '${tempNote.getNoteTitle()}' , '${tempNote.getNoteDescription()}' )|"
+
+                                >Edit</button>
 
                                     <a class="btn btn-danger" th:href="@{'/delete_note/' + ${(tempNote == null) ? '' : tempNote.getNoteId()}}">Delete</a>
 
@@ -114,6 +117,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
+<!--                                <form action="#" th:action="@{/note/update}" th:object="${newNote}" method="put">-->
                                 <form action="#" th:action="@{/note/add}" th:object="${newNote}" method="post">
                                     <input type="hidden" name="noteId" id="note-id" th:field="*{userId}">
                                     <div class="form-group">

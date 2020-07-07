@@ -92,6 +92,36 @@ public class NoteController {
 
         return modelAndView;
     }
+    @GetMapping(value = "/note/{id}")
+    public ModelAndView getNote(@PathVariable Integer id, @ModelAttribute("newNote") NoteForm noteForm, BindingResult bindingResult) {
+
+        System.out.println("DELETE ROUTE");
+
+
+
+//        if (isRemoved>0) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+
+
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+        User user = userService.getUser(userName);
+
+        Note tempNote = noteService.getNote(id);
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.addObject("getNotes", noteListService.getNotesPerUser(user.getUserId()));
+
+        modelAndView.addObject("newNote", tempNote);
+
+        modelAndView.addObject("addedObjectModel", "note");
+        modelAndView.setViewName("home");
+
+        return modelAndView;
+    }
 
 
 }
