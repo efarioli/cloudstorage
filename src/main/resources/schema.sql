@@ -40,5 +40,5 @@ INSERT INTO NOTES (noteTitle, notedescription, userid) VALUES ('Jane First Note'
 INSERT INTO USERS (username, salt, password, firstName, lastName) VALUES ('lm', '2npcs4nJM7D+mMNM3VpGSQ==', 'G0qSm+2sR0dop/nN5mjaOg==', 'Lionel', 'Messy');
 INSERT INTO NOTES (noteTitle, notedescription, userid) VALUES ('Lio First Note', '1. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 3);
 INSERT INTO NOTES (noteTitle, notedescription, userid) VALUES ('Lio Second Note', '2. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 3);
-INSERT INTO CREDENTIALS (url, username, key, password, userid) VALUES ('Lio Second Note', 'its layout.', 'sdsdsdsd', 'sdsdsd123', 3);
-INSERT INTO CREDENTIALS (url, username, key, password, userid) VALUES ('Lio Second Note', 'its layout.', 'sdsdsdsd', 'sdsdsd123', 1);
+//INSERT INTO CREDENTIALS (url, username, key, password, userid) VALUES ('Lio Second Note', 'its layout.', 'sdsdsdsd', 'sdsdsd123', 3);
+//INSERT INTO CREDENTIALS (url, username, key, password, userid) VALUES ('Lio Second Note', 'its layout.', 'sdsdsdsd', 'sdsdsd123', 1);

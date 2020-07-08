@@ -3,10 +3,7 @@ package com.udacity.jwdnd.course1.cloudstorage.controller;
 import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
-import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
-import com.udacity.jwdnd.course1.cloudstorage.services.NoteListService;
-import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
-import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import com.udacity.jwdnd.course1.cloudstorage.services.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,12 +22,14 @@ public class CredentialController {
     private NoteListService noteListService;
     private UserService userService;
     private CredentialService credentialService;
+    private EncryptionService encryptionService;
 
-    public CredentialController(NoteService noteService, NoteListService noteListService, UserService userService, CredentialService credentialService) {
+    public CredentialController(NoteService noteService, NoteListService noteListService, UserService userService, CredentialService credentialService, EncryptionService encryptionService) {
         this.noteService = noteService;
         this.noteListService = noteListService;
         this.userService = userService;
         this.credentialService = credentialService;
+        this.encryptionService = encryptionService;
     }
 
     @PostMapping("/credential/add")
@@ -47,7 +46,7 @@ public class CredentialController {
             System.out.println("ADD CREDENTIAL REQUEST");
 
             Credential credential = new Credential(null, credentialForm.getUrl(), credentialForm.getUserName(),
-                    null, credentialForm.getPassword(), user.getUserId());
+                    null, credentialForm.getPassword(), user.getUserId(), null);
             int rowAdded = credentialService.createCredential(credential);
         }
         CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService,user, "note");
@@ -72,11 +71,22 @@ public class CredentialController {
 
         return modelAndView;
     }
+    @GetMapping(value = "/credential/{id}")
+    public ModelAndView getCredential(@PathVariable Integer id, @ModelAttribute("newCredential") CredentialForm credentialForm, BindingResult bindingResult) {
+        System.out.println("CREDENTIAL DETAIL REQUEST");
+
+        User user = CtrlHelper.getUserInfo(userService);
 
 
+        Credential tempCredential = credentialService.getCredential(id, user.getUserId());
+        String decryptedPass = credentialService.decryptPass(tempCredential.getPassword(), tempCredential.getKey());
+        tempCredential.setPassword(decryptedPass);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("newNote", new Note());
+        modelAndView.addObject("newCredential", tempCredential);
+        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService,user, "note");
 
-
-
-
+        return modelAndView;
+    }
 
 }

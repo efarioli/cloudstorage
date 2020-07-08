@@ -7,8 +7,10 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 @Mapper
 public interface CredentialMapper {
-    @Select("SELECT * FROM NOTES WHERE noteId = #{noteId} AND userId = #{userId} ")
-    Note getNote(Integer noteId, Integer userId);
+    @Select("SELECT * FROM CREDENTIAL WHERE credentialId = #{credentialId} AND userId = #{userId} ")
+    Credential getCredential(Integer credentialId, Integer userId);
+
+
 
 
     @Insert("INSERT INTO CREDENTIALS (url, userName, key, password, userId) VALUES (#{url}, #{userName}, #{key} , #{password}, #{userId})")

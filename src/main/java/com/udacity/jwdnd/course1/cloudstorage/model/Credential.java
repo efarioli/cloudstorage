@@ -1,5 +1,8 @@
 package com.udacity.jwdnd.course1.cloudstorage.model;
 
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
+import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
+
 public class Credential {
     private Integer credentialId;
     private String url;
@@ -7,18 +10,20 @@ public class Credential {
     private String key;
     private String password;
     private Integer userId;
+    private String decoded;
 
     public Credential() {
 
     }
 
-    public Credential(Integer credentialId, String url, String userName, String key, String password, Integer userId) {
+    public Credential(Integer credentialId, String url, String userName, String key, String password, Integer userId, String decoded) {
         this.credentialId = credentialId;
         this.url = url;
         this.userName = userName;
         this.key = key;
         this.password = password;
         this.userId = userId;
+        this.decoded = decoded;
     }
 
     public Integer getCredentialId() {
@@ -67,6 +72,14 @@ public class Credential {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getDecoded() {
+        return decoded;
+    }
+
+    public void setDecoded(String decoded) {
+        this.decoded = decoded;
     }
 
     @Override
