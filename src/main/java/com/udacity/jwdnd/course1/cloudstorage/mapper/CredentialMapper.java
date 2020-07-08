@@ -19,8 +19,8 @@ public interface CredentialMapper {
     @Select("SELECT * FROM CREDENTIALS WHERE userId = #{userId}")
     List<Credential> getCredentialPerUser(Integer userId);
 
-    @Delete("DELETE FROM NOTES WHERE noteId = #{noteId} AND userId = #{userId}")
-    int deleteNote(int noteId, int userId);
+    @Delete("DELETE FROM CREDENTIALS WHERE credentialId = #{credentialId} AND userId = #{userId}")
+    int deleteCredential(int credentialId, int userId);
 
     @Update("UPDATE  NOTES SET noteTitle = #{noteTitle}, noteDescription = #{noteDescription} WHERE noteId = #{noteId} and userId = #{userId}")
     int updateNote (int noteId, int userId, String noteTitle, String noteDescription);

@@ -56,6 +56,23 @@ public class CredentialController {
         return modelAndView;
     }
 
+    @GetMapping(value = "/delete_credential/{id}")
+    public ModelAndView deleteNote(@PathVariable Integer id, @ModelAttribute("newCredential") NoteForm noteForm, BindingResult bindingResult) {
+        System.out.println("DELETE CREDENTIAL ROUTE");
+
+        User user = CtrlHelper.getUserInfo(userService);
+
+        int isRemoved = credentialService.deleteCredential(id, user.getUserId());
+
+        ModelAndView modelAndView = new ModelAndView();
+        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService,user, "note");
+        modelAndView.addObject("newNote", new Note());
+        modelAndView.addObject("newCredential", new Credential());
+
+
+        return modelAndView;
+    }
+
 
 
 
