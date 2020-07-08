@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface NoteMapper {
 
-    @Select("SELECT * FROM NOTES WHERE noteId = #{noteId}")
-    Note getNote(Integer noteId);
+    @Select("SELECT * FROM NOTES WHERE noteId = #{noteId} AND userId = #{userId} ")
+    Note getNote(Integer noteId, Integer userId);
 
 
     @Insert("INSERT INTO NOTES (noteTitle, noteDescription, userId) VALUES (#{noteTitle}, #{noteDescription}, #{userId})")
@@ -22,6 +22,9 @@ public interface NoteMapper {
 
     @Delete("DELETE FROM NOTES WHERE noteId = #{noteId} AND userId = #{userId}")
     int deleteNote(int noteId, int userId);
+
+    @Update("UPDATE  NOTES SET noteTitle = #{noteTitle}, noteDescription = #{noteDescription} WHERE noteId = #{noteId} and userId = #{userId}")
+    int updateNote (int noteId, int userId, String noteTitle, String noteDescription);
 
 
 

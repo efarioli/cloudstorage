@@ -41,7 +41,7 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("newNote", new Note());
         modelAndView.addObject("getNotes", noteListService.getNotesPerUser(user.getUserId()));
-        modelAndView.addObject("addedObjectModel", "");
+        modelAndView.addObject("activeTabModel", "");
         modelAndView.setViewName("home");
         return modelAndView;
     }

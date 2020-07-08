@@ -18,20 +18,20 @@
     <div id="contentDiv" style="clear: right;">
         <nav style="clear: right;">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a th:classappend="${!addedObjectModel.equals('note')} ? active"
+                <a th:classappend="${!activeTabModel.equals('note')} ? active"
                    class="nav-item nav-link " id="nav-files-tab" data-toggle="tab" href="#nav-files" role="tab"
-                   aria-controls="nav-files" th:attr="aria-selected=${!addedObjectModel.equals('note')}">Files</a>
+                   aria-controls="nav-files" th:attr="aria-selected=${!activeTabModel.equals('note')}">Files</a>
 
-                <a th:classappend="${addedObjectModel.equals('note')} ? active"
+                <a th:classappend="${activeTabModel.equals('note')} ? active"
                    class="nav-item nav-link" id="nav-notes-tab" data-toggle="tab" href="#nav-notes" role="tab"
-                   aria-controls="nav-notes" th:attr="aria-selected=${addedObjectModel.equals('note')}">Notes</a>
+                   aria-controls="nav-notes" th:attr="aria-selected=${activeTabModel.equals('note')}">Notes</a>
                 <a class="nav-item nav-link" id="nav-credentials-tab" data-toggle="tab" href="#nav-credentials"
                    role="tab" aria-controls="nav-credentials"
                    aria-selected="false">Credentials</a>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
-            <div th:classappend="${!addedObjectModel.equals('note')} ? active"
+            <div th:classappend="${!activeTabModel.equals('note')} ? active"
                  class="tab-pane fade show " id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
                 <form action="#" enctype="multipart/form-data" method="POST">
                     <div class="container">
@@ -68,7 +68,7 @@
                     </table>
                 </div>
             </div>
-            <div th:classappend="${addedObjectModel.equals('note')} ? active"
+            <div th:classappend="${activeTabModel.equals('note')} ? active"
                  class="tab-pane " id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
                 <button style="margin: 0.25em;" type="button" class="btn btn-info float-right"
                         onclick="showNoteModal()">
@@ -97,6 +97,7 @@
                             </td>
                             <th scope="row" th:text="${tempNote.noteTitle}">Example Note Title</th>
                             <td th:text="${tempNote.noteDescription}">Example Note Description</td>
+
                         </tr>
                         </tbody>
                     </table>
@@ -119,7 +120,8 @@
                             <div class="modal-body">
 <!--                                <form action="#" th:action="@{/note/update}" th:object="${newNote}" method="put">-->
                                 <form action="#" th:action="@{/note/add}" th:object="${newNote}" method="post">
-                                    <input type="hidden" name="noteId" id="note-id" th:field="*{userId}">
+                                    <input type="hidden" name="noteId" id="user-id" th:field="*{userId}">
+                                    <input type="hidden" name="noteId" id="note-id" th:field="*{noteId}">
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">Title</label>
                                         <input type="text" name="noteTitle" class="form-control" id="note-title"
@@ -217,7 +219,7 @@
             </div>
         </div>
     </div>
-    <h2 th:text="${addedObjectModel.toString()}">rrrrr</h2>
+    <h2 th:text="${activeTabModel.toString()}">rrrrr</h2>
 </div>
 
 <script th:src="@{/js/jquery-slim.min.js}"></script>

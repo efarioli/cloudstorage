@@ -5,9 +5,6 @@ import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteListService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
-import org.apache.ibatis.annotations.Delete;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,99 +26,61 @@ public class NoteController {
 
     @PostMapping("/note/add")
     public ModelAndView addNote(@ModelAttribute("newNote") NoteForm noteForm, BindingResult bindingResult) {
-//        if(bindingResult.hasErrors()){
-//            System.out.println("There was a error "+bindingResult);
-//            System.out.println("Person is: "+ noteForm.getNoteDescription());
-//            return "index";
-//        }
-        //System.out.println(model.getAttribute(""));
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userName = auth.getName();
-        User user = userService.getUser(userName);
 
-
+        User user = getUserInfo(userService);
 
         ModelAndView modelAndView = new ModelAndView();
 
-        Note tempNote = new Note( null, noteForm.getNoteTitle(), noteForm.getNoteDescription(),user.getUserId());
-        modelAndView.addObject("notesModel", noteService.createNote(tempNote));
-        modelAndView.addObject("getNotes", noteListService.getNotesPerUser(user.getUserId()));
+        if (noteForm.getNoteId() != null) {
+            System.out.println("UPDATE NOTE REQUEST");
+            noteService.updateNote(noteForm.getNoteId(),user.getUserId(),noteForm.getNoteTitle(),noteForm.getNoteDescription());
+        } else {
+            System.out.println("ADD NOTE REQUEST");
 
-        System.out.println(tempNote);
-
-       // noteListService.addNote((tempNote) model.getAttribute("notesModel"));
-        noteForm.setNoteTitle("");
-        noteForm.setNoteDescription("");
-//        if(bindingResult.hasErrors()){
-//            System.out.println("There was a error "+bindingResult);
-//            System.out.println("Person is: "+ tempNote.getNoteDescription());
-//            return "index";
-//        }
-        modelAndView.addObject("addedObjectModel", "note");
-        modelAndView.setViewName("home");
-        //modelAndView.setViewName("redirect:/home");
+            Note tempNote = new Note(null, noteForm.getNoteTitle(), noteForm.getNoteDescription(), user.getUserId());
+            noteService.createNote(tempNote);
+        }
+        setModelAndView(modelAndView,noteListService,user, "note");
 
         return modelAndView;
     }
 
     @GetMapping(value = "/delete_note/{id}")
     public ModelAndView deleteNote(@PathVariable Integer id, @ModelAttribute("newNote") NoteForm noteForm, BindingResult bindingResult) {
-
         System.out.println("DELETE ROUTE");
 
-
-
-//        if (isRemoved>0) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-
-
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userName = auth.getName();
-        User user = userService.getUser(userName);
+        User user = getUserInfo(userService);
 
         int isRemoved = noteService.deleteNote(id, user.getUserId());
 
         ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.addObject("getNotes", noteListService.getNotesPerUser(user.getUserId()));
-
-        modelAndView.addObject("addedObjectModel", "note");
-        modelAndView.setViewName("home");
+        setModelAndView(modelAndView,noteListService,user, "note");
 
         return modelAndView;
     }
+
     @GetMapping(value = "/note/{id}")
     public ModelAndView getNote(@PathVariable Integer id, @ModelAttribute("newNote") NoteForm noteForm, BindingResult bindingResult) {
+        System.out.println("NOTE DETAIL REQUEST");
 
-        System.out.println("DELETE ROUTE");
-
-
-
-//        if (isRemoved>0) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
+        User user = getUserInfo(userService);
 
 
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userName = auth.getName();
-        User user = userService.getUser(userName);
-
-        Note tempNote = noteService.getNote(id);
-
+        Note tempNote = noteService.getNote(id, user.getUserId());
         ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.addObject("getNotes", noteListService.getNotesPerUser(user.getUserId()));
-
         modelAndView.addObject("newNote", tempNote);
-
-        modelAndView.addObject("addedObjectModel", "note");
-        modelAndView.setViewName("home");
-
         return modelAndView;
     }
 
-
+    public static User  getUserInfo(UserService userService){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
+        return userService.getUser(userName);
+    }
+    public static  ModelAndView setModelAndView(ModelAndView modelAndView, NoteListService noteListService, User user, String tabName){
+        modelAndView.addObject("getNotes", noteListService.getNotesPerUser(user.getUserId()));
+        modelAndView.addObject("activeTabModel", tabName);
+        modelAndView.setViewName("home");
+        return modelAndView;
+    }
 }

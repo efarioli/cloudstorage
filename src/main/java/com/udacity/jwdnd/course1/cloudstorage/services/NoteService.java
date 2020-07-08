@@ -35,8 +35,10 @@ public class NoteService {
         System.out.println("tempnote:" + tempNote);
         return noteId;
     }
-    public Note getNote (Integer noteId) {return noteMapper.getNote(noteId);}
+    public Note getNote (Integer noteId, Integer userId) {return noteMapper.getNote(noteId, userId);}
 
     public int deleteNote(Integer noteId, Integer userId) {return  noteMapper.deleteNote(noteId,userId);}
+
+    public int updateNote(Integer noteId, Integer userId, String noteTitle, String noteDescription) {return  noteMapper.updateNote(noteId,userId, noteTitle, noteDescription);}
 
 }
