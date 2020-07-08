@@ -4,13 +4,19 @@ public class Credential {
     private Integer credentialId;
     private String url;
     private String userName;
+    private String key;
     private String password;
     private Integer userId;
 
-    public Credential(Integer credentialId, String url, String userName, String password, Integer userId) {
+    public Credential() {
+
+    }
+
+    public Credential(Integer credentialId, String url, String userName, String key, String password, Integer userId) {
         this.credentialId = credentialId;
         this.url = url;
         this.userName = userName;
+        this.key = key;
         this.password = password;
         this.userId = userId;
     }
@@ -39,6 +45,14 @@ public class Credential {
         this.userName = userName;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -53,5 +67,17 @@ public class Credential {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Credential{" +
+                "credentialId=" + credentialId +
+                ", url='" + url + '\'' +
+                ", userName='" + userName + '\'' +
+                ", key='" + key + '\'' +
+                ", password='" + password + '\'' +
+                ", userId=" + userId +
+                '}';
     }
 }

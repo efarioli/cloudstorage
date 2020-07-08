@@ -34,3 +34,11 @@ CREATE TABLE IF NOT EXISTS CREDENTIALS (
     userid INT,
     foreign key (userid) references USERS(userid)
 );
+INSERT INTO USERS (username, salt, password, firstName, lastName) VALUES ('js', 'Ja7Vr04VG/pVXAPOEwZ+yA==', 'e00G4Nvu8Wk2GN1x32aFyw==', 'John', 'Smith');
+INSERT INTO USERS (username, salt, password, firstName, lastName) VALUES ('jd', 'aJwcLfh6P7wSqM2WrnMjvg==', 'FXPdtbu0+ItQKFcEQ0itCA==', 'Jane', 'Doe');
+INSERT INTO NOTES (noteTitle, notedescription, userid) VALUES ('Jane First Note', 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 2);
+INSERT INTO USERS (username, salt, password, firstName, lastName) VALUES ('lm', '2npcs4nJM7D+mMNM3VpGSQ==', 'G0qSm+2sR0dop/nN5mjaOg==', 'Lionel', 'Messy');
+INSERT INTO NOTES (noteTitle, notedescription, userid) VALUES ('Lio First Note', '1. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 3);
+INSERT INTO NOTES (noteTitle, notedescription, userid) VALUES ('Lio Second Note', '2. It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.', 3);
+INSERT INTO CREDENTIALS (url, username, key, password, userid) VALUES ('Lio Second Note', 'its layout.', 'sdsdsdsd', 'sdsdsd123', 3);
+INSERT INTO CREDENTIALS (url, username, key, password, userid) VALUES ('Lio Second Note', 'its layout.', 'sdsdsdsd', 'sdsdsd123', 1);
