@@ -46,4 +46,15 @@ public class CredentialForm {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "CredentialForm{" +
+                "credentialId=" + credentialId +
+                ", url='" + url + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", userId=" + userId +
+                '}';
+    }
 }

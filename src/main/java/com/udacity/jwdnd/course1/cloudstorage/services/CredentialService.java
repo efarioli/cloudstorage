@@ -64,6 +64,12 @@ public class CredentialService {
         for (var cred : list) {
             cred.setDecoded(encryptionService.decryptValue(cred.getPassword(), cred.getKey()));
         }
+        for (var cred : list) {
+            System.out.println("=====================================================================");
+            System.out.println(cred);
+            System.out.println("=====================================================================");
+
+        }
         return list;
     }
 
@@ -77,7 +83,11 @@ public class CredentialService {
     }
 
 
-    public Credential getCredential(Integer credentialId, Integer userId) {
+        public Credential getCredential(Integer credentialId, Integer userId) {
         return credentialMapper.getCredential(credentialId, userId);
     }
+    public int updateCredential(Integer credentialId, Integer userId, String url, String userName, String password) {
+        return credentialMapper.updateCredential(credentialId, userId, url, userName, password);
+    }
+
 }

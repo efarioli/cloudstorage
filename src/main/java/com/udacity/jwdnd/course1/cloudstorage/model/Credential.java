@@ -91,6 +91,7 @@ public class Credential {
                 ", key='" + key + '\'' +
                 ", password='" + password + '\'' +
                 ", userId=" + userId +
+                ", decoded='" + decoded + '\'' +
                 '}';
     }
 }

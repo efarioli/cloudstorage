@@ -41,6 +41,15 @@ public class CredentialController {
 
         if (credentialForm.getCredentialId() != null) {
             System.out.println("UPDATE CREDENTIAL REQUEST");
+            credentialForm.setUserId(user.getUserId());
+            CredentialForm cf = credentialForm;
+            System.out.println(cf);
+            Credential c = credentialService.getCredential(cf.getCredentialId(), user.getUserId());
+            String encryptedPassword = encryptionService.encryptValue(cf.getPassword(), c.getKey());
+
+
+            credentialService.updateCredential(cf.getCredentialId(), cf.getUserId(), cf.getUrl(),
+            cf.getUserName(), encryptedPassword);
             //noteService.updateNote(noteForm.getNoteId(),user.getUserId(),noteForm.getNoteTitle(),noteForm.getNoteDescription());
         } else {
             System.out.println("ADD CREDENTIAL REQUEST");
@@ -71,22 +80,22 @@ public class CredentialController {
 
         return modelAndView;
     }
-    @GetMapping(value = "/credential/{id}")
-    public ModelAndView getCredential(@PathVariable Integer id, @ModelAttribute("newCredential") CredentialForm credentialForm, BindingResult bindingResult) {
-        System.out.println("CREDENTIAL DETAIL REQUEST");
-
-        User user = CtrlHelper.getUserInfo(userService);
-
-
-        Credential tempCredential = credentialService.getCredential(id, user.getUserId());
-        String decryptedPass = credentialService.decryptPass(tempCredential.getPassword(), tempCredential.getKey());
-        tempCredential.setPassword(decryptedPass);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("newNote", new Note());
-        modelAndView.addObject("newCredential", tempCredential);
-        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService,user, "note");
-
-        return modelAndView;
-    }
+//    @GetMapping(value = "/credential/{id}")
+//    public ModelAndView getCredential(@PathVariable Integer id, @ModelAttribute("newCredential") CredentialForm credentialForm, BindingResult bindingResult) {
+//        System.out.println("CREDENTIAL DETAIL REQUEST");
+//
+//        User user = CtrlHelper.getUserInfo(userService);
+//
+//
+//        Credential tempCredential = credentialService.getCredential(id, user.getUserId());
+//        String decryptedPass = credentialService.decryptPass(tempCredential.getPassword(), tempCredential.getKey());
+//        tempCredential.setPassword(decryptedPass);
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("newNote", new Note());
+//        modelAndView.addObject("newCredential", tempCredential);
+//        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService,user, "note");
+//
+//        return modelAndView;
+//    }
 
 }

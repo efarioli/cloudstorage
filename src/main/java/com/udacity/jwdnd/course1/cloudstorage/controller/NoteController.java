@@ -64,16 +64,16 @@ public class NoteController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/note/{id}")
-    public ModelAndView getNote(@PathVariable Integer id, @ModelAttribute("newNote") NoteForm noteForm, BindingResult bindingResult) {
-        System.out.println("NOTE DETAIL REQUEST");
-
-        User user = CtrlHelper.getUserInfo(userService);
-
-
-        Note tempNote = noteService.getNote(id, user.getUserId());
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("newNote", tempNote);
-        return modelAndView;
-    }
+//    @GetMapping(value = "/note/{id}")
+//    public ModelAndView getNote(@PathVariable Integer id, @ModelAttribute("newNote") NoteForm noteForm, BindingResult bindingResult) {
+//        System.out.println("NOTE DETAIL REQUEST");
+//
+//        User user = CtrlHelper.getUserInfo(userService);
+//
+//
+//        Note tempNote = noteService.getNote(id, user.getUserId());
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("newNote", tempNote);
+//        return modelAndView;
+//    }
 }

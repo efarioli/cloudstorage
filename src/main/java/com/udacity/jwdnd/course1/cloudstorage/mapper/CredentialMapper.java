@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 @Mapper
 public interface CredentialMapper {
-    @Select("SELECT * FROM CREDENTIAL WHERE credentialId = #{credentialId} AND userId = #{userId} ")
+    @Select("SELECT * FROM CREDENTIALS WHERE credentialId = #{credentialId} AND userId = #{userId} ")
     Credential getCredential(Integer credentialId, Integer userId);
 
 
@@ -24,7 +24,9 @@ public interface CredentialMapper {
     @Delete("DELETE FROM CREDENTIALS WHERE credentialId = #{credentialId} AND userId = #{userId}")
     int deleteCredential(int credentialId, int userId);
 
-    @Update("UPDATE  NOTES SET noteTitle = #{noteTitle}, noteDescription = #{noteDescription} WHERE noteId = #{noteId} and userId = #{userId}")
-    int updateNote (int noteId, int userId, String noteTitle, String noteDescription);
+    @Update("UPDATE  CREDENTIALS SET url = #{url}, userName = #{username}, password = #{password}  WHERE credentialId = #{credentialId} and userId = #{userId}")
+    int updateCredential (int credentialId, int userId, String url, String username, String password);
+
+
 
 }
