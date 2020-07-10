@@ -56,28 +56,11 @@
                             <th style="width: 80%" scope="col">File Name</th>
                         </tr>
                         </thead>
-
-                        <tbody th:each="tempNote : ${getNotes}">
-                        <tr>
-                            <td>
-                                <button  class="btn btn-success"
-                                         th:attr="onclick=|showNoteModal(${tempNote.getNoteId()},  '${tempNote.getNoteTitle()}' , '${tempNote.getNoteDescription()}' )|"
-
-                                >Edit</button>
-
-                                <a class="btn btn-danger" th:href="@{'/delete_note/' + ${(tempNote == null) ? '' : tempNote.getNoteId()}}">Delete</a>
-
-                            </td>
-                            <th scope="row" th:text="${tempNote.noteTitle}">Example Note Title</th>
-                            <td th:text="${tempNote.noteDescription}">Example Note Description</td>
-
-                        </tr>
-                        </tbody>
                         <tbody th:each="tempFile : ${getFiles}">
                         <tr>
                             <td>
                                 <a target="_blank" class="btn btn-success">View</a>
-                                <a class="btn btn-danger">Delete</a>
+                                <a class="btn btn-danger" th:href="@{'/delete_file/' + ${(tempFile == null) ? '' : tempFile.getFileId()}}">Delete</a>
                             </td>
                             <th scope="row" th:text="${tempFile.filename}">ExampleFile.txt</th>
                         </tr>

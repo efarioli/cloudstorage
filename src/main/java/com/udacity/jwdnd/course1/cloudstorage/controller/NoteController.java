@@ -37,7 +37,7 @@ public class NoteController {
 
         if (noteForm.getNoteId() != null) {
             System.out.println("UPDATE NOTE REQUEST");
-            noteService.updateNote(noteForm.getNoteId(),user.getUserId(),noteForm.getNoteTitle(),noteForm.getNoteDescription());
+            noteService.updateNote(noteForm.getNoteId(), user.getUserId(), noteForm.getNoteTitle(), noteForm.getNoteDescription());
         } else {
             System.out.println("ADD NOTE REQUEST");
 
@@ -45,7 +45,7 @@ public class NoteController {
             noteService.createNote(tempNote);
         }
         modelAndView.addObject("newCredential", new Credential());
-        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService, fileService, user, "note");
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "note");
 
         return modelAndView;
     }
@@ -56,10 +56,10 @@ public class NoteController {
 
         User user = CtrlHelper.getUserInfo(userService);
 
-        // int isRemoved = noteService.deleteNote(id, user.getUserId());
+        int isRemoved = noteService.deleteNote(id, user.getUserId());
 
         ModelAndView modelAndView = new ModelAndView();
-        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService, fileService, user, "note");
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "note");
 
         return modelAndView;
     }

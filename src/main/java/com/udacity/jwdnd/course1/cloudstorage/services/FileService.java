@@ -69,4 +69,7 @@ public class FileService {
         return list;
     }
 
+    public int deleteFile(Integer fileId, Integer userId) {
+        return fileMapper.deleteFile(fileId, userId);
+    }
 }
