@@ -33,14 +33,14 @@
         <div class="tab-content" id="nav-tabContent">
             <div th:classappend="${!activeTabModel.equals('note')} ? active"
                  class="tab-pane fade show " id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
-                <form action="#" enctype="multipart/form-data" method="POST">
+                <form action="#" th:action="@{/file/add}" enctype="multipart/form-data" th:object="${newFile}" method="POST">
                     <div class="container">
                         <div class="row" style="margin: 1em;">
                             <div class="col-sm-2">
                                 <label for="fileUpload">Upload a New File:</label>
                             </div>
                             <div class="col-sm-6">
-                                <input type="file" class="form-control-file" id="fileUpload" name="fileUpload">
+                                <input type="file" class="form-control-file" id="fileUpload" name="newFile" >
                             </div>
                             <div class="col-sm-4">
                                 <button type="submit" class="btn btn-dark">Upload</button>

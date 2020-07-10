@@ -7,8 +7,7 @@ import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteListService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class NoteController {
     private NoteListService noteListService;
     private UserService userService;
     private CredentialService credentialService;
-
+    @Autowired
     public NoteController(NoteService noteService, NoteListService noteListService, UserService userService, CredentialService credentialService) {
         this.noteService = noteService;
         this.noteListService = noteListService;
@@ -56,7 +55,7 @@ public class NoteController {
 
         User user = CtrlHelper.getUserInfo(userService);
 
-        int isRemoved = noteService.deleteNote(id, user.getUserId());
+        // int isRemoved = noteService.deleteNote(id, user.getUserId());
 
         ModelAndView modelAndView = new ModelAndView();
         CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService,user, "note");

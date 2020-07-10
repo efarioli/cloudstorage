@@ -4,8 +4,7 @@ import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
 
 @Controller
 public class CredentialController {
@@ -24,6 +22,7 @@ public class CredentialController {
     private CredentialService credentialService;
     private EncryptionService encryptionService;
 
+    @Autowired
     public CredentialController(NoteService noteService, NoteListService noteListService, UserService userService, CredentialService credentialService, EncryptionService encryptionService) {
         this.noteService = noteService;
         this.noteListService = noteListService;

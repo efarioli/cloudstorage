@@ -1,18 +1,36 @@
 package com.udacity.jwdnd.course1.cloudstorage.model;
 
-import java.sql.Blob;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 public class File {
     private Integer fileId;
     private String filename;
     private String contentType;
+    private String fileSize;
     private Integer userId;
-    private Blob fileData;
+    private byte[] fileData;
 
-    public File(Integer fileId, String filename, String contentType, Integer userId, Blob fileData) {
+    public File() {
+    }
+
+    public File (MultipartFile multipartFile) throws IOException {
+        System.out.println(multipartFile == null);
+        filename = multipartFile.getOriginalFilename();
+        contentType = multipartFile.getContentType();
+        fileSize = "" + multipartFile.getSize() + " bytes";
+        fileData = multipartFile.getBytes();
+    }
+
+
+    public File(Integer fileId, String filename, String contentType, String fileSize, Integer userId, byte[] fileData) {
         this.fileId = fileId;
         this.filename = filename;
         this.contentType = contentType;
+        this.fileSize = fileSize;
         this.userId = userId;
         this.fileData = fileData;
     }
@@ -41,6 +59,14 @@ public class File {
         this.contentType = contentType;
     }
 
+    public String getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(String fileSize) {
+        this.fileSize = fileSize;
+    }
+
     public Integer getUserId() {
         return userId;
     }
@@ -49,11 +75,23 @@ public class File {
         this.userId = userId;
     }
 
-    public Blob getFileData() {
+    public byte[] getFileData() {
         return fileData;
     }
 
-    public void setFileData(Blob fileData) {
+    public void setFileData(byte[] fileData) {
         this.fileData = fileData;
+    }
+
+    @Override
+    public String toString() {
+        return "File{" +
+                "fileId=" + fileId +
+                ", filename='" + filename + '\'' +
+                ", contentType='" + contentType + '\'' +
+                ", fileSize='" + fileSize + '\'' +
+                ", userId=" + userId +
+                ", fileData=" + Arrays.toString(fileData) +
+                '}';
     }
 }

@@ -39,7 +39,7 @@ public class CredentialForm {
         this.password = password;
     }
 
-    public Integer getUserId() {
+    public Integer getUserId() {        
         return userId;
     }
 
