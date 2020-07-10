@@ -57,4 +57,16 @@ public class FileService {
 
     }
 
+    public List<File> getFilesPerUser(Integer userId) {
+        List<File> list = fileMapper.getFilesPerUser(userId);
+
+        for (var file: list) {
+            System.out.println("=====================================================================");
+            System.out.println(file);
+            System.out.println("=====================================================================");
+
+        }
+        return list;
+    }
+
 }

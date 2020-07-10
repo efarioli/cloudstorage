@@ -27,6 +27,7 @@ public class FileController {
 
     private FileService fileService;
 
+
     @Autowired
     public FileController(UserService userService, NoteListService noteListService, CredentialService credentialService, FileService fileService) {
         this.userService = userService;
@@ -51,11 +52,11 @@ public class FileController {
 
         int added = fileService.storeFile(tempFile);
         System.out.println("addded " + added);
-        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, user, "note");
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "note");
 
         modelAndView.addObject("newFile", new File());
         modelAndView.addObject("newNote", new Note());
-        modelAndView.addObject("newCredential", new Credential());
+                modelAndView.addObject("newCredential", new Credential());
 
 
 

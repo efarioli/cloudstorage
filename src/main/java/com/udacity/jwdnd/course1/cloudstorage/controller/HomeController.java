@@ -5,8 +5,10 @@ import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
+import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteListService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,12 +22,14 @@ public class HomeController {
     private NoteListService noteListService;
     private UserService userService;
     private CredentialService credentialService;
+    private FileService fileService;
 
-    public HomeController(NoteListService noteListService, UserService userService,
-            CredentialService credentialService) {
+    @Autowired
+    public HomeController(NoteListService noteListService, UserService userService, CredentialService credentialService, FileService fileService) {
         this.noteListService = noteListService;
         this.userService = userService;
         this.credentialService = credentialService;
+        this.fileService = fileService;
     }
 
     @GetMapping("/home")
@@ -45,6 +49,7 @@ public class HomeController {
         modelAndView.addObject("newFile", new File());
         modelAndView.addObject("getNotes", noteListService.getNotesPerUser(user.getUserId()));
         modelAndView.addObject("credentials", credentialService.getCredentialsPerUser(user.getUserId()));
+        modelAndView.addObject("getFiles", fileService.getFilesPerUser(user.getUserId()));
         modelAndView.addObject("activeTabModel", "");
         modelAndView.setViewName("home");
         return modelAndView;

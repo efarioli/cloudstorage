@@ -21,14 +21,16 @@ public class CredentialController {
     private UserService userService;
     private CredentialService credentialService;
     private EncryptionService encryptionService;
+    private FileService fileService;
 
     @Autowired
-    public CredentialController(NoteService noteService, NoteListService noteListService, UserService userService, CredentialService credentialService, EncryptionService encryptionService) {
+    public CredentialController(NoteService noteService, NoteListService noteListService, UserService userService, CredentialService credentialService, EncryptionService encryptionService, FileService fileService) {
         this.noteService = noteService;
         this.noteListService = noteListService;
         this.userService = userService;
         this.credentialService = credentialService;
         this.encryptionService = encryptionService;
+        this.fileService = fileService;
     }
 
     @PostMapping("/credential/add")
@@ -57,7 +59,7 @@ public class CredentialController {
                     null, credentialForm.getPassword(), user.getUserId(), null);
             int rowAdded = credentialService.createCredential(credential);
         }
-        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService,user, "note");
+        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService, fileService, user, "note");
         modelAndView.addObject("newNote", new Note());
        // modelAndView.addObject("newCredential", new Credential());
         return modelAndView;
@@ -72,7 +74,7 @@ public class CredentialController {
         int isRemoved = credentialService.deleteCredential(id, user.getUserId());
 
         ModelAndView modelAndView = new ModelAndView();
-        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService,user, "note");
+        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService, fileService, user, "note");
         modelAndView.addObject("newNote", new Note());
         modelAndView.addObject("newCredential", new Credential());
 

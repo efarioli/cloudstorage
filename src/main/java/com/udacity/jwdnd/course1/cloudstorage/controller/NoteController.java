@@ -1,12 +1,10 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
+import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
-import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
-import com.udacity.jwdnd.course1.cloudstorage.services.NoteListService;
-import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
-import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import com.udacity.jwdnd.course1.cloudstorage.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,12 +17,15 @@ public class NoteController {
     private NoteListService noteListService;
     private UserService userService;
     private CredentialService credentialService;
+    private FileService fileService;
+
     @Autowired
-    public NoteController(NoteService noteService, NoteListService noteListService, UserService userService, CredentialService credentialService) {
+    public NoteController(NoteService noteService, NoteListService noteListService, UserService userService, CredentialService credentialService, FileService fileService) {
         this.noteService = noteService;
         this.noteListService = noteListService;
         this.userService = userService;
         this.credentialService = credentialService;
+        this.fileService = fileService;
     }
 
     @PostMapping("/note/add")
@@ -44,7 +45,7 @@ public class NoteController {
             noteService.createNote(tempNote);
         }
         modelAndView.addObject("newCredential", new Credential());
-        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService, user, "note");
+        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService, fileService, user, "note");
 
         return modelAndView;
     }
@@ -58,7 +59,7 @@ public class NoteController {
         // int isRemoved = noteService.deleteNote(id, user.getUserId());
 
         ModelAndView modelAndView = new ModelAndView();
-        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService,user, "note");
+        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService, fileService, user, "note");
 
         return modelAndView;
     }
