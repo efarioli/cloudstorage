@@ -11,13 +11,22 @@ import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteListService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @Controller
 public class FileController {
@@ -46,6 +55,7 @@ public class FileController {
         ModelAndView modelAndView = new ModelAndView();
         //modelAndView.addObject("newFile", )
         System.out.println("+++++" + newFile);
+        System.out.println("+++++" + newFile.getOriginalFilename());
         File tempFile = new File(newFile);
         tempFile.setUserId(user.getUserId());
 
@@ -81,5 +91,26 @@ public class FileController {
         modelAndView.addObject("newCredential", new Credential());
 
         return modelAndView;
+    }
+
+    @GetMapping("/downloadFile/{fileId}")
+    public <T> ResponseEntity<T> downloadFIle(@PathVariable String fileId) {
+        // Load file from database
+        User user = CtrlHelper.getUserInfo(userService);
+        File file = fileService.getFile(Integer.parseInt(fileId), user.getUserId());
+
+
+        ModelAndView modelAndView = new ModelAndView();
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "note");
+        modelAndView.addObject("newFile", new File());
+        modelAndView.addObject("newNote", new Note());
+        modelAndView.addObject("newCredential", new Credential());
+
+        return (ResponseEntity<T>) ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(file.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(new ByteArrayResource(file.getFileData()));
+
+
     }
 }

@@ -62,7 +62,7 @@ public class FileService {
 
         for (var file: list) {
             System.out.println("=====================================================================");
-            System.out.println(file);
+            System.out.println(file.getFilename());
             System.out.println("=====================================================================");
 
         }
@@ -71,5 +71,9 @@ public class FileService {
 
     public int deleteFile(Integer fileId, Integer userId) {
         return fileMapper.deleteFile(fileId, userId);
+    }
+
+    public File getFile(int fileId, Integer userId) {
+        return fileMapper.getFile(fileId, userId);
     }
 }

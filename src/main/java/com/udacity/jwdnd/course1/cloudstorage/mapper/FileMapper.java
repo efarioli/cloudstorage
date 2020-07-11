@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface FileMapper {
     @Select("SELECT * FROM FILES WHERE fileId = #{fileId} AND userId = #{userId} ")
-    Credential getFile(Integer fileId, Integer userId);
+    File getFile(Integer fileId, Integer userId);
 
 
 
