@@ -59,8 +59,10 @@
                         <tbody th:each="tempFile : ${getFiles}">
                         <tr>
                             <td>
-                                <a target="_blank" class="btn btn-success">View</a>
-                                <a class="btn btn-danger" th:href="@{'/delete_file/' + ${(tempFile == null) ? '' : tempFile.getFileId()}}">Delete</a>
+                                <a target="_blank" class="btn btn-success"
+                                   th:href="@{'/download_file/' + ${(tempFile == null) ? '' : tempFile.getFileId()}}">View</a>
+                                <a class="btn btn-danger"
+                                   th:href="@{'/delete_file/' + ${(tempFile == null) ? '' : tempFile.getFileId()}}">Delete</a>
                             </td>
                             <th scope="row" th:text="${tempFile.filename}">ExampleFile.txt</th>
                         </tr>

@@ -93,7 +93,7 @@ public class FileController {
         return modelAndView;
     }
 
-    @GetMapping("/downloadFile/{fileId}")
+    @GetMapping("/download_file/{fileId}")
     public <T> ResponseEntity<T> downloadFIle(@PathVariable String fileId) {
         // Load file from database
         User user = CtrlHelper.getUserInfo(userService);
