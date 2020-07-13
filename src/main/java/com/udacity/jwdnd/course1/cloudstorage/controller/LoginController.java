@@ -29,33 +29,11 @@ public class LoginController {
 
     public String loginView() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        System.out.println("Hited login GET");
-
-        System.out.println("]]]]]]]]]]]]]]]]]]]]]]]]]]" + auth.getName());
-        
-
+        System.out.println("LOGIN ROUTE");
         if (!(auth instanceof AnonymousAuthenticationToken)) {
-            System.out.println("*****************************************************************");
-            System.out.println("]]]]]]]]]]]]]]]]]]]]]]]]]]" + auth.getName());
-            //Integer userId = Integer.parseInt(auth.getName());
-            //User user = userService.getUser(userId);
-            System.out.println("#########################################");
-            //System.out.println(user);
-            // model.addAttribute("userModel", user);
-            // System.out.println("44444" + model.getAttribute("userModel"));
-            System.out.println("5555555555555555555555555555");
-
-
-            /* The user is logged in :) */
-            //return "redirect:/home";
             return "login";
-            // return new ModelAndView("redirect:/home", (Map<String, ?>) model);
         }
-        System.out.println("LOGIN ROUT-----------------------------------------------------");
-
         return "login";
-        //return  new ModelAndView("login");
     }
 }
 

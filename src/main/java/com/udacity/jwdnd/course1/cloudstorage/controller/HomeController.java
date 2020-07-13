@@ -34,29 +34,12 @@ public class HomeController {
 
     @GetMapping("/home")
     public ModelAndView getHomePage(@ModelAttribute("newMessage") NoteForm noteForm, Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        System.out.println("£££££££££££££££££££££££££££££££££££££££££££££££££££££££££");
-        System.out.println(auth.getName());
-        String userName = auth.getName();
-        User user = userService.getUser(userName);
-        noteForm.setUserId(user.getUserId());
-        System.out.println(user);
         System.out.println("HOME ROUT-----------------------------------------------------");
+        User user = CtrlHelper.getUserInfo(userService);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("newNote", new Note());
-        modelAndView.addObject("newCredential", new Credential());
-        modelAndView.addObject("newFile", new File());
-        modelAndView.addObject("getNotes", noteListService.getNotesPerUser(user.getUserId()));
-        modelAndView.addObject("credentials", credentialService.getCredentialsPerUser(user.getUserId()));
-        modelAndView.addObject("getFiles", fileService.getFilesPerUser(user.getUserId()));
-        modelAndView.addObject("activeTabModel", "");
-        modelAndView.setViewName("home");
-        return modelAndView;
-    }
-    // @GetMapping("/logout")
-    // public String doLogout(){
-    // return "redirect:/login?logout";
-    // }
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "");
+        return modelAndView;    }
+
 
 }

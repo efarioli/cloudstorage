@@ -3,6 +3,7 @@ package com.udacity.jwdnd.course1.cloudstorage.services;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.NoteMapper;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -12,6 +13,7 @@ public class NoteService {
     private final NoteMapper noteMapper;
     private final NoteListService noteListService;
 
+    @Autowired
     public NoteService(UserMapper userMapper, NoteMapper noteMapper, NoteListService noteListService) {
         this.userMapper = userMapper;
         this.noteMapper = noteMapper;

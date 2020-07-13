@@ -30,7 +30,6 @@ public class UserService {
         User usertemp = new User(null, user.getUsername(), encodedSalt, hashedPassword, user.getFirstName(), user.getLastName());
         // int numRowsAdded = userMapper.insert(usertemp);
         int returnedID = usertemp.getUserId();
-        System.out.println("----------sdjjsdjsdjsd----" + usertemp.getUserId());
         return returnedID;
     }
 

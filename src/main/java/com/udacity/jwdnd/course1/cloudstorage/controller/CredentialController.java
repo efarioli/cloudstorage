@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
+import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.*;
@@ -50,18 +51,15 @@ public class CredentialController {
 
 
             credentialService.updateCredential(cf.getCredentialId(), cf.getUserId(), cf.getUrl(),
-            cf.getUserName(), encryptedPassword);
+                    cf.getUserName(), encryptedPassword);
             //noteService.updateNote(noteForm.getNoteId(),user.getUserId(),noteForm.getNoteTitle(),noteForm.getNoteDescription());
         } else {
             System.out.println("ADD CREDENTIAL REQUEST");
-
             Credential credential = new Credential(null, credentialForm.getUrl(), credentialForm.getUserName(),
                     null, credentialForm.getPassword(), user.getUserId(), null);
             int rowAdded = credentialService.createCredential(credential);
         }
-        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService, fileService, user, "note");
-        modelAndView.addObject("newNote", new Note());
-       // modelAndView.addObject("newCredential", new Credential());
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "credential");
         return modelAndView;
     }
 
@@ -72,12 +70,8 @@ public class CredentialController {
         User user = CtrlHelper.getUserInfo(userService);
 
         int isRemoved = credentialService.deleteCredential(id, user.getUserId());
-
         ModelAndView modelAndView = new ModelAndView();
-        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService, fileService, user, "note");
-        modelAndView.addObject("newNote", new Note());
-        modelAndView.addObject("newCredential", new Credential());
-
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "credential");
 
         return modelAndView;
     }

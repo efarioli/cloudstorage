@@ -45,10 +45,9 @@ public class FileController {
         this.fileService = fileService;
     }
 
-
     @PostMapping("/file/add")
     public ModelAndView addFile(@RequestParam("newFile") MultipartFile newFile) throws IOException {
-        System.out.println("ADD FILE HITTED");
+        System.out.println("ADD FILE HIT");
 
         User user = CtrlHelper.getUserInfo(userService);
 
@@ -62,18 +61,8 @@ public class FileController {
 
         int added = fileService.storeFile(tempFile);
         System.out.println("addded " + added);
-        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "note");
-
-        modelAndView.addObject("newFile", new File());
-        modelAndView.addObject("newNote", new Note());
-        modelAndView.addObject("newCredential", new Credential());
-
-
-        modelAndView.setViewName("home");
-        System.out.println("END -- ADD FILE HITTED");
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "file");
         return modelAndView;
-
-
     }
 
     @GetMapping(value = "/delete_file/{id}")
@@ -81,14 +70,10 @@ public class FileController {
         System.out.println("DELETE FILE ROUTE");
 
         User user = CtrlHelper.getUserInfo(userService);
-
         int isRemoved = fileService.deleteFile(id, user.getUserId());
 
         ModelAndView modelAndView = new ModelAndView();
-        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "note");
-        modelAndView.addObject("newFile", new File());
-        modelAndView.addObject("newNote", new Note());
-        modelAndView.addObject("newCredential", new Credential());
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "file");
 
         return modelAndView;
     }
@@ -98,19 +83,12 @@ public class FileController {
         // Load file from database
         User user = CtrlHelper.getUserInfo(userService);
         File file = fileService.getFile(Integer.parseInt(fileId), user.getUserId());
-
-
         ModelAndView modelAndView = new ModelAndView();
-        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "note");
-        modelAndView.addObject("newFile", new File());
-        modelAndView.addObject("newNote", new Note());
-        modelAndView.addObject("newCredential", new Credential());
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "file");
 
         return (ResponseEntity<T>) ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(file.getContentType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(new ByteArrayResource(file.getFileData()));
-
-
     }
 }
