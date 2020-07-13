@@ -27,6 +27,7 @@ public  class CtrlHelper {
         modelAndView.addObject("newNote", new Note());
         modelAndView.addObject("newCredential", new Credential());
         modelAndView.addObject("activeTabModel", tabName);
+        modelAndView.addObject("userName", user.getFirstName() + " " + user.getLastName());
         modelAndView.setViewName("home");
     }
 }
