@@ -33,6 +33,16 @@ public class CredentialController {
         this.encryptionService = encryptionService;
         this.fileService = fileService;
     }
+    @GetMapping("/credential/add")
+    public ModelAndView justRedirect(@ModelAttribute("newNote") NoteForm noteForm, BindingResult bindingResult) {
+
+        User user = CtrlHelper.getUserInfo(userService);
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "credential");
+        return modelAndView;
+    }
 
     @PostMapping("/credential/add")
     public ModelAndView addCredential(@ModelAttribute("newCredential") CredentialForm credentialForm, BindingResult bindingResult) {
@@ -40,6 +50,10 @@ public class CredentialController {
         User user = CtrlHelper.getUserInfo(userService);
 
         ModelAndView modelAndView = new ModelAndView();
+        int rowUpdated = 0;
+        int rowAdded = 0;
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "credential");
+
 
         if (credentialForm.getCredentialId() != null) {
             System.out.println("UPDATE CREDENTIAL REQUEST");
@@ -50,16 +64,32 @@ public class CredentialController {
             String encryptedPassword = encryptionService.encryptValue(cf.getPassword(), c.getKey());
 
 
-            credentialService.updateCredential(cf.getCredentialId(), cf.getUserId(), cf.getUrl(),
+            rowUpdated = credentialService.updateCredential(cf.getCredentialId(), cf.getUserId(), cf.getUrl(),
                     cf.getUserName(), encryptedPassword);
-            //noteService.updateNote(noteForm.getNoteId(),user.getUserId(),noteForm.getNoteTitle(),noteForm.getNoteDescription());
+            if (rowUpdated==1){
+                modelAndView.addObject("message", "A Credential has been updated..");
+                modelAndView.addObject("error", false);
+            } else {
+                modelAndView.addObject("message", "Something went wrong... Your credential has NOT been updated");
+                modelAndView.addObject("error", true);
+            }
         } else {
             System.out.println("ADD CREDENTIAL REQUEST");
             Credential credential = new Credential(null, credentialForm.getUrl(), credentialForm.getUserName(),
                     null, credentialForm.getPassword(), user.getUserId(), null);
-            int rowAdded = credentialService.createCredential(credential);
+            rowAdded = credentialService.createCredential(credential);
+            if (rowAdded>0){
+                modelAndView.addObject("message", "A Credential has been added..");
+                modelAndView.addObject("error", false);
+            } else {
+                modelAndView.addObject("message", "Something went wrong... Your credential has NOT been added");
+                modelAndView.addObject("error", true);
+            }
         }
-        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "credential");
+        modelAndView.addObject("credentials", credentialService.getCredentialsPerUser(user.getUserId()));
+        modelAndView.addObject("showModal", true);
+
+
         return modelAndView;
     }
 
@@ -71,26 +101,17 @@ public class CredentialController {
 
         int isRemoved = credentialService.deleteCredential(id, user.getUserId());
         ModelAndView modelAndView = new ModelAndView();
-        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "credential");
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "note");
+        if (isRemoved==1){
+            modelAndView.addObject("message", "A Credential has been deleted..");
+            modelAndView.addObject("error", false);
+        } else {
+            modelAndView.addObject("message", "Something went wrong... Your Credential has NOT been deleted");
+            modelAndView.addObject("error", true);
+        }
+        modelAndView.addObject("showModal", true);
 
         return modelAndView;
     }
-//    @GetMapping(value = "/credential/{id}")
-//    public ModelAndView getCredential(@PathVariable Integer id, @ModelAttribute("newCredential") CredentialForm credentialForm, BindingResult bindingResult) {
-//        System.out.println("CREDENTIAL DETAIL REQUEST");
-//
-//        User user = CtrlHelper.getUserInfo(userService);
-//
-//
-//        Credential tempCredential = credentialService.getCredential(id, user.getUserId());
-//        String decryptedPass = credentialService.decryptPass(tempCredential.getPassword(), tempCredential.getKey());
-//        tempCredential.setPassword(decryptedPass);
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("newNote", new Note());
-//        modelAndView.addObject("newCredential", tempCredential);
-//        CtrlHelper.setModelAndView(modelAndView,noteListService, credentialService,user, "note");
-//
-//        return modelAndView;
-//    }
 
 }

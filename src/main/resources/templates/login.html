@@ -16,13 +16,7 @@
             Invalid username or password
         </div>
         <div class="alert alert-dark"
-             th:if="${#httpServletRequest.getHeader('referer') != null
-             &&
-             (#httpServletRequest.getHeader('referer').contains('home')
-             || #httpServletRequest.getHeader('referer').contains('logout')
-             )
-
-             }"
+             th:if="${param.logout}"
         >
 
             You have been logged out
