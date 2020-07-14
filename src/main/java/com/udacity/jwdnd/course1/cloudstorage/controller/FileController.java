@@ -97,13 +97,11 @@ public class FileController {
         if (isRemoved==1){
             modelAndView.addObject("message", "A file has been deleted..");
             modelAndView.addObject("error", false);
-            modelAndView.addObject("showModal", true);
         } else {
             modelAndView.addObject("message", "Something went wrong... Your file has NOT been deleted");
             modelAndView.addObject("error", true);
-            modelAndView.addObject("showModal", true);
         }
-
+        modelAndView.addObject("showModal", true);
         return modelAndView;
     }
 
