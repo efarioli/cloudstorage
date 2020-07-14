@@ -48,13 +48,28 @@ public class FileController {
     @PostMapping("/file/add")
     public ModelAndView addFile(@RequestParam("newFile") MultipartFile newFile) throws IOException {
         System.out.println("ADD FILE HIT");
-
+        ModelAndView modelAndView = new ModelAndView();
         User user = CtrlHelper.getUserInfo(userService);
 
-        ModelAndView modelAndView = new ModelAndView();
+
+        if (newFile.getOriginalFilename().equals("")){
+            CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "file");
+
+            modelAndView.addObject("activeTabModel", "file");
+            modelAndView.addObject("message", "You must provide a file...\nPlease select a file");
+            modelAndView.addObject("error", true);
+            modelAndView.addObject("showModal", true);
+
+            modelAndView.setViewName("home");
+            return modelAndView;
+        }
+
+
         //modelAndView.addObject("newFile", )
         System.out.println("+++++" + newFile);
         System.out.println("+++++" + newFile.getOriginalFilename());
+        System.out.println("+++++" + (newFile.getBytes()==null) + "---" + newFile.getSize() + "----(" + newFile.getOriginalFilename() + ")--filename--" + (newFile.getOriginalFilename().equals("")) + (newFile.getOriginalFilename()==null)) ;
+
         File tempFile = new File(newFile);
         tempFile.setUserId(user.getUserId());
 
@@ -62,6 +77,10 @@ public class FileController {
         int added = fileService.storeFile(tempFile);
         System.out.println("addded " + added);
         CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "file");
+        modelAndView.addObject("message", "A file has been added..");
+        modelAndView.addObject("error", false);
+        modelAndView.addObject("showModal", true);
+
         return modelAndView;
     }
 
@@ -71,9 +90,19 @@ public class FileController {
 
         User user = CtrlHelper.getUserInfo(userService);
         int isRemoved = fileService.deleteFile(id, user.getUserId());
+        System.out.println("is removed----" + isRemoved);
 
         ModelAndView modelAndView = new ModelAndView();
         CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "file");
+        if (isRemoved==1){
+            modelAndView.addObject("message", "A file has been deleted..");
+            modelAndView.addObject("error", false);
+            modelAndView.addObject("showModal", true);
+        } else {
+            modelAndView.addObject("message", "Something went wrong... Your file has NOT been deleted");
+            modelAndView.addObject("error", true);
+            modelAndView.addObject("showModal", true);
+        }
 
         return modelAndView;
     }

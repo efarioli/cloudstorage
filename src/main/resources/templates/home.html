@@ -13,6 +13,10 @@
             color: #212529;
 
         }
+        .hide {
+            display: none;
+        }
+
     </style>
 
     <title>Home</title>
@@ -22,7 +26,7 @@
     <div id="logoutDiv">
         <form action="#" th:action="@{/logout}" method="POST">
             <button type="submit" class="btn btn-secondary float-right">Logout</button>
-            <span  th:text="${userName}" class="float-right badge  badge-pill badge-primary"></span>
+            <span th:text="${userName}" class="float-right badge  badge-pill badge-primary"></span>
 
         </form>
     </div>
@@ -246,8 +250,53 @@
                     </div>
                 </div>
             </div>
+            <!--            dfsssssssssssddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd-->
+            <div class="modal  fade" id="errorModal" tabindex="-1" role="dialog"
+                 aria-labelledby="erroModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Attention</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-success fill-parent" th:classappend="${error} ? hide">
+                                <h1 class="display-5">Success</h1>
+                                <span th:text="${message}">Your changes were successfully saved. Click <a>here</a> to continue.</span>
+                            </div>
+                            <div class="alert alert-danger fill-parent " th:classappend="${!error} ? hide">
+                                <h1 class="display-5">Error</h1>
+                                <span th:text="${message}">Your changes were not saved. Click <a>here</a> to continue.</span>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Accept</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--            dfsssssssssssddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd-->
+
         </div>
     </div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        var flag = [[${showModal}]]; //Your Thymleaf variable
+        console.log("----------------------------------------");
+        console.log(flag);
+        window.onload = function() {
+            if(!flag)
+                return; // Exit/Return if the variable is false
+            showError(); // Call your favourite method if the variable is true
+        };
+
+        /*]]>*/
+    </script>
     <h2 th:text="${activeTabModel.toString()}">rrrrr</h2>
 </div>
 
@@ -272,6 +321,10 @@
         $('#credential-username').val(username ? username : '');
         $('#credential-password').val(password ? password : '');
         $('#credentialModal').modal('show');
+    }
+    function showError() {
+        $('#errorModal').modal('show');
+
     }
 </script>
 </body>
