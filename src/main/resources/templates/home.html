@@ -104,8 +104,8 @@
                             <th style="width: 60%" scope="col">Description</th>
                         </tr>
                         </thead>
-                        <tbody th:each="tempNote : ${getNotes}">
-                        <tr>
+                        <tbody >
+                        <tr th:each="tempNote : ${getNotes}">
                             <td>
                                 <button class="btn btn-success"
                                         th:attr="onclick=|showNoteModal(${tempNote.getNoteId()},  '${tempNote.getNoteTitle()}' , '${tempNote.getNoteDescription()}' )|"
@@ -273,7 +273,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Accept</button>
+                            <button id="errormodalbutton" type="button" class="btn btn-primary" data-dismiss="modal">Accept</button>
 
                         </div>
                     </div>
