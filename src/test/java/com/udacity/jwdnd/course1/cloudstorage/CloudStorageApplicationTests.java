@@ -191,5 +191,127 @@ class CloudStorageApplicationTests {
         Assertions.assertEquals(notesSizeBeforeDelete - 1, notesSizeAfterDelete);
     }
 
+    @Test
+    public void updateANote() throws InterruptedException {
+
+        //Login as Lionel Messi
+        //This user has 2 Notes and 6 Ballon D'Ore
+        driver.get("http://localhost:" + this.port + "/login");
+        Thread.sleep(100);
+        WebElement username2 = driver.findElement(By.id("inputUsername"));
+        username2.sendKeys("lm");
+        WebElement password2 = driver.findElement(By.id("inputPassword"));
+        password2.sendKeys("789");
+        password2.submit();
+        Thread.sleep(500);
+
+//
+        //Select Note Tab
+        WebElement noteTab = driver.findElement(By.id("nav-notes-tab"));
+        Actions builder = new Actions(driver);
+        builder.moveToElement(noteTab).click(noteTab);
+        builder.perform();
+        Thread.sleep(200);
+
+        //Click delete Button in first row
+        WebElement firstDeleteNoteButton = driver.findElement(By.cssSelector("#userTable > tbody > tr:nth-child(1) > td:nth-child(1) > button"));
+        firstDeleteNoteButton.click();
+        Thread.sleep(500);
+
+        //Input two values in the input form
+        WebElement noteTitleInput = driver.findElement(By.id("note-title"));
+        noteTitleInput.clear();
+        noteTitleInput.sendKeys("newValue in note one");
+        WebElement noteDescriptionInput = driver.findElement(By.id("note-description"));
+        noteDescriptionInput.clear();
+        noteDescriptionInput.sendKeys("new Description value in note one");
+
+        //Submitting the add note form
+        noteDescriptionInput.submit();
+        Thread.sleep(500);
+
+        //Closing the confirmation message after the new note is created
+        WebElement acceptModal = driver.findElement(By.id("errormodalbutton"));
+        acceptModal.click();
+        Thread.sleep(100);
+
+
+
+
+        //Getting the last element of the note list
+        //and extracting both values
+        WebElement lastNoteRowNoteTitleInput = driver.findElement(By.cssSelector("#userTable > tbody > tr:nth-child(1) >th:nth-child(2)"));
+        WebElement lastNoteRowNoteDescrInput = driver.findElement(By.cssSelector("#userTable > tbody > tr:nth-child(1) >td:nth-child(3)"));
+        String lastNoteRowTitle = lastNoteRowNoteTitleInput.getText();
+        String lastNoteRowNoteDescription = lastNoteRowNoteDescrInput.getText();
+
+
+
+        Assertions.assertEquals("newValue in note one" + "new Description value in note one", lastNoteRowTitle + lastNoteRowNoteDescription);
+    }
+
+    @Test
+    public void createACredential() throws InterruptedException {
+
+                driver.get("http://localhost:" + this.port + "/login");
+        Thread.sleep(100);
+        WebElement username2 = driver.findElement(By.id("inputUsername"));
+        username2.sendKeys("js");
+        WebElement password2 = driver.findElement(By.id("inputPassword"));
+        password2.sendKeys("123");
+        password2.submit();
+        Thread.sleep(500);
+
+        //Select Note Tab
+        WebElement credentialTab = driver.findElement(By.id("nav-credentials-tab"));
+        Actions builder = new Actions(driver);
+        builder.moveToElement(credentialTab).click(credentialTab);
+        builder.perform();
+        Thread.sleep(500);
+
+        //Click addCredential Button #credentialModal > div > div > div.modal-footer > button.btn.btn-primary
+        WebElement addCredentialButton = driver.findElement(By.cssSelector("#nav-credentials > button"));
+        addCredentialButton.click();
+        Thread.sleep(500);
+
+        //Input two values in the input form
+        WebElement credentialUrlInput = driver.findElement(By.id("credential-url"));
+        credentialUrlInput.sendKeys("Url4");
+        WebElement credentialUsernameInput = driver.findElement(By.id("credential-username"));
+        credentialUsernameInput.sendKeys("username4");
+        WebElement credentialPasswordInput = driver.findElement(By.id("credential-password"));
+        credentialPasswordInput.sendKeys("4444");
+
+
+        //Submitting the add Credential form
+        credentialPasswordInput.submit();
+        Thread.sleep(500);
+
+        //Closing the confirmation message after the new note is created
+        WebElement acceptModal = driver.findElement(By.id("errormodalbutton"));
+        acceptModal.click();
+        Thread.sleep(100);
+
+
+        //Getting the last element of the Credential list
+        //and extracting both values
+        WebElement lastCredentialRowUrl = driver.findElement(By.cssSelector("#credentialTable > tbody > tr:last-child >th:nth-child(2)"));
+        WebElement lastCredentialRowUsername = driver.findElement(By.cssSelector("#credentialTable > tbody > tr:last-child >td:nth-child(3)"));
+        WebElement lastNotePassword = driver.findElement(By.cssSelector("#credentialTable > tbody > tr:last-child > td:nth-child(1) > button"));
+        String lastCredentialRowUrlLabel = lastCredentialRowUrl.getText();
+        String lastCredentialRowUsernameLabel = lastCredentialRowUsername.getText();
+        System.out.println(lastNotePassword.getAttribute("onclick"));
+
+        //Get decoded password
+        String javascriptCode = lastNotePassword.getAttribute("onclick");
+        String[] javascriptCodeArr = javascriptCode.split("'");
+        int arraySize = javascriptCodeArr.length;
+        String decodedPassword = javascriptCodeArr[arraySize-2];
+
+
+
+        Assertions.assertEquals("Url4" + "username4" + "4444", lastCredentialRowUrlLabel + lastCredentialRowUsernameLabel + decodedPassword);
+    }
+
 
 }

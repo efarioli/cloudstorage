@@ -186,8 +186,8 @@
                         </thead>
 
 
-                        <tbody th:each="tempCred : ${credentials}">
-                        <tr>
+                        <tbody >
+                        <tr th:each="tempCred : ${credentials}">
                             <td>
                                 <button type="button" class="btn btn-success"
                                         th:attr="onclick=|showCredentialModal(${tempCred.getCredentialId()} ,'${tempCred.getUrl()}',  '${tempCred.getUserName()}' , '${tempCred.getDecoded()}' )|">
