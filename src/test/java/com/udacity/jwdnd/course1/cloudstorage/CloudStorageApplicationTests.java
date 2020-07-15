@@ -313,5 +313,78 @@ class CloudStorageApplicationTests {
         Assertions.assertEquals("Url4" + "username4" + "4444", lastCredentialRowUrlLabel + lastCredentialRowUsernameLabel + decodedPassword);
     }
 
+    @Test
+    public void deleteACredential() throws InterruptedException {
+        //Delete and element from the list
+        //CHeck that element with that id is not anymore in list
+
+        //Login as Lionel Messi
+        //This user has 2 Notes and 6 Ballon D'Ore
+        driver.get("http://localhost:" + this.port + "/login");
+        Thread.sleep(100);
+        WebElement username2 = driver.findElement(By.id("inputUsername"));
+        username2.sendKeys("js");
+        WebElement password2 = driver.findElement(By.id("inputPassword"));
+        password2.sendKeys("123");
+        password2.submit();
+        Thread.sleep(500);
+
+//
+        //Select Note Tab
+        WebElement noteTab = driver.findElement(By.id("nav-credentials-tab"));
+        Actions builder = new Actions(driver);
+        builder.moveToElement(noteTab).click(noteTab);
+        builder.perform();
+        Thread.sleep(200);
+
+        // WebElement tbodyOfTable = driver.findElements (By.cssSelector("#userTable > tbody > tr"));
+        List<WebElement> credentials = driver.findElements(By.cssSelector("#credentialTable > tbody > tr"));
+        int credentialsSizeBeforeDelete = credentials.size();
+
+
+
+        //Click delete Button in first row
+
+
+
+        WebElement firstDeleteCredentialButton = driver.findElement(By.cssSelector("#credentialTable > tbody > tr:nth-child(1) > td:nth-child(1) > a"));
+        String hrefCode = firstDeleteCredentialButton.getAttribute("href");
+        int numberFromHref = Integer.parseInt(hrefCode.substring(hrefCode.lastIndexOf('/')+1));
+
+        firstDeleteCredentialButton.click();
+        Thread.sleep(500);
+
+        //Closing the confirmation Delete message after the new note is created
+        WebElement acceptModal = driver.findElement(By.id("errormodalbutton"));
+        acceptModal.click();
+        Thread.sleep(100);
+
+
+        //Get decoded password
+
+
+        credentials = driver.findElements(By.cssSelector("#credentialTable > tbody > tr"));
+        int credentialsSizeAfterDelete = credentials.size();
+
+        boolean flag = false;
+        if (credentialsSizeAfterDelete>0){
+            for ( int i = 1; i<= credentials.size(); i++){
+                WebElement element = driver.findElement(By.cssSelector("#credentialTable > tbody > tr:nth-child("+ i +") > td:nth-child(1) > a"));
+                String hrefCodeList = element.getAttribute("href");
+
+                int numberFromHrefFromList = Integer.parseInt(hrefCodeList.substring(hrefCodeList.lastIndexOf('/')+1));
+
+
+                if (numberFromHrefFromList == numberFromHref){
+                    flag = true;
+                }
+            }
+        }
+
+
+        Assertions.assertEquals(credentialsSizeBeforeDelete - 1, credentialsSizeAfterDelete);
+        Assertions.assertEquals( false, flag);
+    }
+
 
 }
