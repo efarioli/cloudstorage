@@ -316,10 +316,9 @@ class CloudStorageApplicationTests {
     @Test
     public void deleteACredential() throws InterruptedException {
         //Delete and element from the list
+        //Check the list size before the deletion and then after
         //CHeck that element with that id is not anymore in list
 
-        //Login as Lionel Messi
-        //This user has 2 Notes and 6 Ballon D'Ore
         driver.get("http://localhost:" + this.port + "/login");
         Thread.sleep(100);
         WebElement username2 = driver.findElement(By.id("inputUsername"));
@@ -329,8 +328,6 @@ class CloudStorageApplicationTests {
         password2.submit();
         Thread.sleep(500);
 
-//
-        //Select Note Tab
         WebElement noteTab = driver.findElement(By.id("nav-credentials-tab"));
         Actions builder = new Actions(driver);
         builder.moveToElement(noteTab).click(noteTab);
@@ -360,12 +357,12 @@ class CloudStorageApplicationTests {
         Thread.sleep(100);
 
 
-        //Get decoded password
 
 
         credentials = driver.findElements(By.cssSelector("#credentialTable > tbody > tr"));
         int credentialsSizeAfterDelete = credentials.size();
 
+        //Check all the id in the list if match the id that was already deleted
         boolean flag = false;
         if (credentialsSizeAfterDelete>0){
             for ( int i = 1; i<= credentials.size(); i++){
@@ -380,10 +377,77 @@ class CloudStorageApplicationTests {
                 }
             }
         }
-
-
         Assertions.assertEquals(credentialsSizeBeforeDelete - 1, credentialsSizeAfterDelete);
         Assertions.assertEquals( false, flag);
+    }
+
+    @Test
+    public void updateACredential() throws InterruptedException {
+        //Login as Lionel Messi
+        //This user has 2 Notes and 6 Ballon D'Ore
+        driver.get("http://localhost:" + this.port + "/login");
+        Thread.sleep(100);
+        WebElement username2 = driver.findElement(By.id("inputUsername"));
+        username2.sendKeys("js");
+        WebElement password2 = driver.findElement(By.id("inputPassword"));
+        password2.sendKeys("123");
+        password2.submit();
+        Thread.sleep(500);
+
+//
+        //Select Note Tab
+        WebElement credentialTab = driver.findElement(By.id("nav-credentials-tab"));
+        Actions builder = new Actions(driver);
+        builder.moveToElement(credentialTab).click(credentialTab);
+        builder.perform();
+        Thread.sleep(200);
+
+        //Click delete Button in first row
+        WebElement firstUpdatedCredentialButton = driver.findElement(By.cssSelector("#credentialTable > tbody > tr:nth-child(1) > td:nth-child(1) > button"));
+        firstUpdatedCredentialButton.click();
+        Thread.sleep(500);
+
+        //Input two values in the input form
+        WebElement credentialUrlInput = driver.findElement(By.id("credential-url"));
+        credentialUrlInput.clear();
+        credentialUrlInput.sendKeys("newValue in Credential one");
+        WebElement credentialUsernameInput = driver.findElement(By.id("credential-username"));
+        credentialUsernameInput.clear();
+        credentialUsernameInput.sendKeys("new Description value in Credential one".substring(0,30));
+        WebElement credentialPasswordInput = driver.findElement(By.id("credential-password"));
+        credentialPasswordInput.clear();
+        credentialPasswordInput.sendKeys("new password one");
+
+        //Submitting the add note form
+        credentialUsernameInput.submit();
+        Thread.sleep(500);
+
+
+        //Closing the confirmation message after the new note is created
+        WebElement acceptModal = driver.findElement(By.id("errormodalbutton"));
+        acceptModal.click();
+        Thread.sleep(100);
+
+
+        //Getting the last element of the note list
+        //and extracting both values
+        WebElement lastCredentialsRowUrlEl = driver.findElement(By.cssSelector("#credentialTable > tbody > tr:nth-child(1) >th:nth-child(2)"));
+        WebElement lastCredentialsRowUsernameEl = driver.findElement(By.cssSelector("#credentialTable > tbody > tr:nth-child(1) >td:nth-child(3)"));
+        String lastCredentialsRowUrlLabel = lastCredentialsRowUrlEl.getText();
+        String lastCredentialsRowUsernameLabel = lastCredentialsRowUsernameEl.getText();
+
+
+        WebElement lastNotePassword = driver.findElement(By.cssSelector("#credentialTable > tbody > tr:nth-child(1) > td:nth-child(1) > button"));
+        //Get decoded password
+        String javascriptCode = lastNotePassword.getAttribute("onclick");
+        String[] javascriptCodeArr = javascriptCode.split("'");
+        int arraySize = javascriptCodeArr.length;
+        String decodedPassword = javascriptCodeArr[arraySize-2];
+
+
+        //username have a limit of character of 30
+        Assertions.assertEquals("newValue in Credential one" + "new Description value in Credential one".substring(0,30) + "new password one" , lastCredentialsRowUrlLabel + lastCredentialsRowUsernameLabel + decodedPassword);
+
     }
 
 
