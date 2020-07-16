@@ -77,4 +77,15 @@ public class FileService {
     public File getFile(int fileId, Integer userId) {
         return fileMapper.getFile(fileId, userId);
     }
+    public boolean isFileNameExist(String fileName) {
+        for (File file : files){
+            System.out.println(file.getFilename() +"----" + fileName);
+            if (file.getFilename().equals(fileName)){
+
+                return true;
+            }
+        }
+        return false;
+
+    }
 }

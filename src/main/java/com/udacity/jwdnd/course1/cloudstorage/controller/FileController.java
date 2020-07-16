@@ -54,7 +54,6 @@ public class FileController {
 
         if (newFile.getOriginalFilename().equals("")){
             CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "file");
-
             modelAndView.addObject("activeTabModel", "file");
             modelAndView.addObject("message", "You must provide a file...\nPlease select a file");
             modelAndView.addObject("error", true);
@@ -62,6 +61,19 @@ public class FileController {
 
             modelAndView.setViewName("home");
             return modelAndView;
+        }
+
+        //Check id the filename exists in the list of file
+        //If it exists, cancel the upload of the file and show an error message
+        boolean isFilenameInList = fileService.isFileNameExist( newFile.getResource().getFilename());
+        if (isFilenameInList){
+            CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "file");
+            modelAndView.addObject("message", "The File has not been "+ "added" + "...\n" +
+                    "Another file has already the same filename. It cannot be two files with the same filename. Please Choose another file and try again.");
+            modelAndView.addObject("error", true);
+            modelAndView.addObject("showModal", true);
+            return modelAndView;
+
         }
 
 
