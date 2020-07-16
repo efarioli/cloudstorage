@@ -68,6 +68,8 @@ public class CredentialService {
             System.out.println("=====================================================================");
 
         }
+        //Update the list
+        credentials = list;
         return list;
     }
 
@@ -86,6 +88,16 @@ public class CredentialService {
     }
     public int updateCredential(Integer credentialId, Integer userId, String url, String userName, String password) {
         return credentialMapper.updateCredential(credentialId, userId, url, userName, password);
+    }
+    public boolean isUsernameExist(String username, Integer userId) {
+        for (Credential cred : this.credentials){
+            if (cred.getUserName().equals(username)){
+                System.out.println(cred.getUserName() + "-----" + username);
+                return true;
+            }
+        }
+        return false;
+
     }
 
 }

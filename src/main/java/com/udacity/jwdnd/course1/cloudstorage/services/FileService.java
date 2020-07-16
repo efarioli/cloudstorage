@@ -66,6 +66,7 @@ public class FileService {
             System.out.println("=====================================================================");
 
         }
+        files = list;
         return list;
     }
 

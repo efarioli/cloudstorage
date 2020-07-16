@@ -1,8 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
-import com.udacity.jwdnd.course1.cloudstorage.model.File;
-import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +51,16 @@ public class CredentialController {
         int rowUpdated = 0;
         int rowAdded = 0;
         CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "credential");
+        boolean isUsernameInList = credentialService.isUsernameExist(credentialForm.getUserName(),credentialForm.getUserId());
+        if (isUsernameInList){
+            String word = (credentialForm.getCredentialId() != null)? "updated": "added";
+            modelAndView.addObject("message", "The Credential has not been "+ word + "...\n" +
+                    "Another credential has already the same username. It cannot be two credentials with the same user name. Please Choose another username and try again.");
+            modelAndView.addObject("error", true);
+            modelAndView.addObject("showModal", true);
+            return modelAndView;
+
+        }
 
 
         if (credentialForm.getCredentialId() != null) {
@@ -101,7 +109,7 @@ public class CredentialController {
 
         int isRemoved = credentialService.deleteCredential(id, user.getUserId());
         ModelAndView modelAndView = new ModelAndView();
-        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "note");
+        CtrlHelper.setModelAndView(modelAndView, noteListService, credentialService, fileService, user, "credential");
         if (isRemoved==1){
             modelAndView.addObject("message", "A Credential has been deleted..");
             modelAndView.addObject("error", false);
